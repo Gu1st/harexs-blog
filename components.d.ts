@@ -16,6 +16,7 @@ declare module '@vue/runtime-core' {
     NPagination: typeof import('naive-ui')['NPagination']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Talk: typeof import('./src/components/article/talk.vue')['default']
   }
 }
 

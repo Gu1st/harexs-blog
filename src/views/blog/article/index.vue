@@ -56,6 +56,11 @@ console.log('文章页，参数为：', route.params?.id)
       font-size: 24px !important;
     }
   }
+  .comment {
+    width: auto !important;
+    max-width: 100%;
+    margin: 10px 10px 0 10px !important;
+  }
 }
 
 @media (max-width: 768px) {
