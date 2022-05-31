@@ -8,6 +8,7 @@ declare module '@vue/runtime-core' {
     BlogFooter: typeof import('./src/components/home/blogFooter.vue')['default']
     BlogHeader: typeof import('./src/components/home/blogHeader.vue')['default']
     BlogList: typeof import('./src/components/home/blogList.vue')['default']
+    Comment: typeof import('./src/components/article/comment.vue')['default']
     Header: typeof import('./src/components/home/header.vue')['default']
     NButton: typeof import('naive-ui')['NButton']
     NIcon: typeof import('naive-ui')['NIcon']

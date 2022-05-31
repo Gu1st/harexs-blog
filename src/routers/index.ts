@@ -3,9 +3,21 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: () => import('../views/blog/home/index.vue')
+    name: 'index',
+    redirect: '/home',
+    component: () => import('../layouts/blog/index.vue'),
+    children: [
+      {
+        path: '/home',
+        name: 'home',
+        component: () => import('../views/blog/home/index.vue')
+      },
+      { path: '/category/:id', name: 'category', component: () => import('../views/blog/category/index.vue') },
+      { path: '/search/:content', name: 'search', component: () => import('../views/blog/search/index.vue') },
+      { path: '/article/:id', name: 'article', component: () => import('../views/blog/article/index.vue') }
+    ]
   },
+
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('../views/blog/error/index.vue') }
 ]
 

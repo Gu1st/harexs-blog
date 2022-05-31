@@ -26,7 +26,7 @@
         >{{ item.title }}</router-link
       >
     </div>
-    <n-input class="header-search" round placeholder="输入搜索内容">
+    <n-input class="header-search" :maxlength="100" v-on:keyup.enter="searchSomething" round placeholder="输入搜索内容">
       <template #suffix>
         <n-icon :component="Search" />
       </template>
@@ -49,10 +49,21 @@ const showsliderMenu = () => {
   sliderMenu.value = !sliderMenu.value
 }
 
+//搜索框按下回车
+const searchSomething = e => {
+  let content: string = e.target.value.trim()
+  if (content.length === 0) {
+    return
+  }
+  router.push({
+    path: `/search/${content}`
+  })
+}
+
 //返回首页
 const goHome = () => {
   router.push({
-    path: '/1'
+    path: '/home'
   })
 }
 
@@ -66,15 +77,15 @@ window.addEventListener('resize', e => {
 let menuList = ref([
   {
     title: '首页',
-    url: '/'
+    url: '/home'
   },
   {
     title: '技术',
-    url: '/program'
+    url: '/category/pro'
   },
   {
     title: '杂谈',
-    url: '/talk'
+    url: '/category/talk'
   }
 ])
 </script>
