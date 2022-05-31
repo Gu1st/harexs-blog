@@ -14,7 +14,7 @@
         >
       </div>
     </transition>
-    <img class="header-logo" :src="dog" />
+    <img class="header-logo" :src="dog" @click="goHome" />
     <div class="header-title">Gu1st's Blog</div>
     <div class="logo-diver"></div>
     <div class="header-nav">
@@ -36,14 +36,27 @@
 
 <script setup lang="ts">
 import { Search, MenuOutline } from '@vicons/ionicons5'
+import { useRouter } from 'vue-router'
 import dog from '../../assets/dog.jpg'
 import { ref } from 'vue'
 
 let sliderMenu = ref(false)
+
+const router = useRouter()
+
+//显示和隐藏菜单
 const showsliderMenu = () => {
   sliderMenu.value = !sliderMenu.value
 }
 
+//返回首页
+const goHome = () => {
+  router.push({
+    path: '/1'
+  })
+}
+
+//当页面宽度变化的时候判断是否显示菜单
 window.addEventListener('resize', e => {
   if (window.innerWidth > 768) {
     sliderMenu.value = false

@@ -5,11 +5,14 @@ import '@vue/runtime-core'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    BlogFooter: typeof import('./src/components/home/blogFooter.vue')['default']
     BlogHeader: typeof import('./src/components/home/blogHeader.vue')['default']
+    BlogList: typeof import('./src/components/home/blogList.vue')['default']
     Header: typeof import('./src/components/home/header.vue')['default']
     NButton: typeof import('naive-ui')['NButton']
     NIcon: typeof import('naive-ui')['NIcon']
     NInput: typeof import('naive-ui')['NInput']
+    NPagination: typeof import('naive-ui')['NPagination']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
