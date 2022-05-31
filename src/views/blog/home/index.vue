@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import blogHeader from '../../../components/home/header.vue'
+import blogHeader from '../../../components/home/blogHeader.vue'
 </script>
 
 <style scoped></style>
