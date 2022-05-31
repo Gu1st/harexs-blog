@@ -4,9 +4,7 @@
       <div class="article-title">
         <span>{{ item.title }}</span>
       </div>
-      <div class="article-img">
-        <img :src="item.img" style="width: 100%; height: 100%" />
-      </div>
+      <div v-if="item.img" class="article-img" :style="{ backgroundImage: `url(${item.img})` }"></div>
       <div class="article-desc">
         <span>{{ item.desc }}</span>
       </div>
@@ -47,6 +45,13 @@ let mockData = ref([
   },
   {
     title: '我是一个测试标题',
+    desc: '我是一个用来描述的占位符，总之就是必须要特别长，哈哈我来凑个字数吧!',
+    date: 'gu1st发表于2022-5-31',
+    category: '技术',
+    comments: '共0条评论'
+  },
+  {
+    title: '我是一个测试标题',
     img: 'https://margox-cn-wp-blog-1254052530.file.myqcloud.com/wp-content/uploads/2020/08/repic_banner.jpg',
     desc: '我是一个用来描述的占位符，总之就是必须要特别长，哈哈我来凑个字数吧!',
     date: 'gu1st发表于2022-5-31',
@@ -65,15 +70,33 @@ let mockData = ref([
 </script>
 
 <style scoped lang="scss">
-@media (max-width: 1019px) {
+@media (max-width: 980px) {
+  .bolg {
+    width: auto !important;
+    margin: 30px 30px 0 30px !important;
+    .article-title span {
+      font-size: 24px !important;
+    }
+  }
 }
+
+@media (max-width: 768px) {
+  .bolg {
+    .article-img {
+      height: 150px !important;
+      overflow: hidden;
+    }
+    .article-title span {
+      font-size: 20px !important;
+      font-weight: bold;
+    }
+  }
+}
+
 .bolg {
   width: 1020px;
-  margin: 0 auto;
-  margin-top: 60px;
-  img {
-    border-radius: 6px;
-  }
+  max-width: 100%;
+  margin: 30px auto 0 auto;
   .article-card {
     margin-bottom: 30px;
     padding-bottom: 30px;
@@ -87,7 +110,11 @@ let mockData = ref([
     }
   }
   .article-img {
+    border-radius: 6px;
     height: 300px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
   }
   .article-desc {
     padding: 10px 0 10px 0;
