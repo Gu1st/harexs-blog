@@ -33,7 +33,7 @@ let { editorRef, valueHtml, toolbarConfig, editorConfig, handleCreated } = useEd
 
 const data = ref([{ name: 'Wonderwall', craeteTime: '2022-06-01', actions: '' }])
 
-const Columns = [
+const Columns: any[] = [
   {
     title: '分类名称',
     key: 'name'
