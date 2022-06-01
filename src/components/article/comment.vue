@@ -1,5 +1,5 @@
 <template>
-  <div class="comment">
+  <div v-if="mockData.length" class="comment">
     <div class="comment-header">共8条评论</div>
     <div class="comment-list" v-for="(item, index) in mockData" :key="index">
       <div class="comment-list-header">
@@ -7,10 +7,22 @@
         <div class="comment-list-time">{{ item.createTime }}</div>
       </div>
       <div class="comment-list-content">{{ item.content }}</div>
+
+      <!-- 回复按钮 -->
       <div class="comment-list-reply">
-        <n-button type="primary"> 回复 </n-button>
+        <n-button type="primary" @click="item.reply = !item.reply"> 回复 </n-button>
       </div>
-      <div class="comment-list-replyList">
+
+      <!-- 按回复后的评论弹出列表 -->
+      <transition name="fade" mode="in-out">
+        <div class="comment-reply-card" v-if="item.reply">
+          <comment-talk></comment-talk>
+          <div class="comment-reply-card-icon"></div>
+        </div>
+      </transition>
+
+      <!-- 评论的回复列表 -->
+      <div v-if="item.replyList.length" class="comment-list-replyList">
         <div class="comment-list" v-for="(childrenItem, indexs) in item.replyList" :key="indexs">
           <div class="comment-list-header">
             <div class="comment-list-name">{{ childrenItem.name }}</div>
@@ -21,70 +33,77 @@
       </div>
     </div>
   </div>
+  <div class="noComment" v-else>暂无评论,来抢占沙发?</div>
   <div class="talk">
     <comment-talk></comment-talk>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import commentTalk from './talk.vue'
-let mockData = [
+let mockData = ref([
   {
-    name: 'Gu1st',
-    createTime: '2022-05-31 上午12:34',
-    content: '我是测试内容给123',
+    name: '123',
+    createTime: '2022-6-1',
+    content: '测试内容123',
+    reply: false,
     replyList: [
       {
-        name: 'Gu1st2',
-        createTime: '2022-05-31 下午13:34',
-        content: '12345我是测试内容给1234'
-      },
-      {
-        name: 'Gu1st2',
-        createTime: '2022-05-31 下午13:34',
-        content: '12345我是测试内容给1234'
-      },
-      {
-        name: 'Gu1st2',
-        createTime: '2022-05-31 下午13:34',
-        content: '12345我是测试内容给1234'
-      }
-    ]
-  },
-  {
-    name: 'Gu1st',
-    createTime: '2022-05-31 上午12:34',
-    content: '我是测试内容给123',
-    replyList: [
-      {
-        name: 'Gu1st2',
-        createTime: '2022-05-31 下午13:34',
-        content: '12345我是测试内容给1234'
-      }
-    ]
-  },
-  {
-    name: 'Gu1st',
-    createTime: '2022-05-31 上午12:34',
-    content: '我是测试内容给123',
-    replyList: [
-      {
-        name: 'Gu1st2',
-        createTime: '2022-05-31 下午13:34',
-        content: '12345我是测试内容给1234'
+        name: '123',
+        createTime: '2022-6-1',
+        content: '测试内容123'
       }
     ]
   }
-]
+])
 </script>
 
 <style scoped lang="scss">
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+.noComment {
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: #666666;
+  background-color: #f1f2f3;
+}
 .comment {
   &-header {
     margin-bottom: 20px;
     font-size: 18px;
     font-weight: bold;
     color: #555555;
+  }
+  &-reply-card {
+    position: relative;
+    margin-left: 60px;
+    margin-top: 4px;
+    padding: 10px;
+    border: 1px solid #eee;
+    &-icon {
+      position: absolute;
+      left: 50%;
+      top: -31px;
+      transform: translateX(-50%) rotate(135deg);
+      width: 60px;
+      height: 60px;
+      background-color: #fff;
+      z-index: 15;
+      border: 1px solid #eee;
+      border-top: none;
+      border-right: none;
+    }
   }
   &-list {
     padding-bottom: 20px;

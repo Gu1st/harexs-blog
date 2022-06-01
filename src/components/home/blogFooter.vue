@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    <span> 粤ICP备2021046507号-1 GU1ST.CN©2022</span>
+    <span>GU1ST.CN©2022 粤ICP备2021046507号-1</span>
   </div>
 </template>
 

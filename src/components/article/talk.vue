@@ -14,6 +14,9 @@
         <n-input type="text" />
       </div>
     </div>
+    <div class="talk-send">
+      <n-button type="primary"> 发表评论 </n-button>
+    </div>
   </div>
 </template>
 
@@ -22,7 +25,10 @@
 <style lang="scss" scoped>
 .talk {
   margin-top: 10px;
-  margin-bottom: 40px;
+  margin-bottom: 25px;
+  &-send {
+    margin-top: 16px;
+  }
   &-header {
     margin-bottom: 10px;
     font-size: 18px;
