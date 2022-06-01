@@ -26,7 +26,13 @@
         >{{ item.title }}</router-link
       >
     </div>
-    <n-input class="header-search" :maxlength="100" v-on:keyup.enter="searchSomething" round placeholder="输入搜索内容">
+    <n-input
+      class="header-search"
+      :maxlength="100"
+      v-on:keyup.enter="searchSomething"
+      round
+      placeholder="输入搜索内容"
+    >
       <template #suffix>
         <n-icon :component="Search" />
       </template>
@@ -68,7 +74,7 @@ const goHome = () => {
 }
 
 //当页面宽度变化的时候判断是否显示菜单
-window.addEventListener('resize', e => {
+window.addEventListener('resize', () => {
   if (window.innerWidth > 768) {
     sliderMenu.value = false
   }

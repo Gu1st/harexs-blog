@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { h, ref, Component, onMounted, watchEffect } from 'vue'
+import { h, ref, Component, onMounted } from 'vue'
 import rootHeader from '../../components/root/rootHeader.vue'
 import { NIcon } from 'naive-ui'
 import { useRoute, useRouter } from 'vue-router'
