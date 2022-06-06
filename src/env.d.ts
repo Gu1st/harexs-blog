@@ -6,3 +6,11 @@ declare module '*.vue' {
   const component: DefineComponent<{}, {}, any>
   export default component
 }
+// 引入naive对应的定义类型
+import type { MessageApiInjection } from 'naive-ui/lib/message/src/MessageProvider'
+
+declare global {
+  interface Window {
+    $message: MessageApiInjection
+  }
+}

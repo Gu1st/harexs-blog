@@ -1,15 +1,26 @@
 import { defineStore } from 'pinia'
+import { login } from '../api/bolg/index'
+import { useRouter } from 'vue-router'
 
 export const useStore = defineStore('main', {
   state: () => {
     return {
-      counter: 0
+      info: {},
+      token: ''
     }
   },
-  getters: {
-    doubleCounter: state => state.counter * 2
-  },
+  getters: {},
   actions: {
-    addCounter: state => (state += 1)
+    async login(user) {
+      const router = useRouter()
+      const res: any = await login(user)
+      if (res.code === 200) {
+        this.$state.info = res.token
+        this.$state.info = res.data
+        router.push({
+          path: '/root/dashboard'
+        })
+      }
+    }
   }
 })

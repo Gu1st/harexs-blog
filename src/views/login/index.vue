@@ -3,17 +3,31 @@
     <div class="login-center">
       <span class="login-center-title">Login to system</span>
       <div class="login-center-usr">
-        <n-input type="text" placeholder="登录账号" />
+        <n-input v-model:value="user.username" type="text" placeholder="登录账号" />
       </div>
       <div class="login-center-pwd">
-        <n-input type="text" placeholder="登录密码" />
+        <n-input v-model:value="user.password" type="text" placeholder="登录密码" />
       </div>
-      <n-button class="login-center-btn" type="primary"> 登 录 </n-button>
+      <n-button @click="loginSystem" class="login-center-btn" type="primary"> 登 录 </n-button>
     </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { reactive } from 'vue'
+import { useStore } from '../../stores/index'
+
+const store = useStore()
+
+let user = reactive({
+  username: '',
+  password: ''
+})
+
+const loginSystem = () => {
+  store.login(user)
+}
+</script>
 
 <style scoped lang="scss">
 @media (max-width: 450px) {

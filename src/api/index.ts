@@ -1,6 +1,4 @@
 import axios from 'axios'
-import { useMessage } from 'naive-ui'
-const message = useMessage()
 
 const service = axios.create({
   baseURL: '',
@@ -21,11 +19,16 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     switch (response.data.code) {
+      case 200:
+        window.$message.success(response.data.msg)
+        break
       case 500:
-        message.error('数据请求出错，请重试')
+        window.$message.error(response.data.msg)
         break
       case 408:
-        message.info('当前用户身份已过期,请重新登录')
+      case 403:
+      case 401:
+        window.$message.error('当前身份会话已过期，请重新登录')
         break
     }
     return response.data
