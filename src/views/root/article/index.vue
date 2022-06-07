@@ -1,46 +1,63 @@
 <template>
   <n-grid x-gap="12" :cols="3" style="margin-bottom: 10px">
     <n-gi>
-      <n-button type="primary"> 新增文章 </n-button>
+      <n-button type="primary" @click="newArticle"> 新增文章 </n-button>
     </n-gi>
   </n-grid>
 
   <n-data-table :columns="Columns" :data="data" :pagination="false" :bordered="false" />
-
-  <div style="border: 1px solid #ccc; margin-top: 10px; z-index: 100">
-    <Toolbar
-      :editor="editorRef"
-      :defaultConfig="toolbarConfig"
-      mode="simple"
-      style="border-bottom: 1px solid #ccc"
-    />
-    <Editor
-      :defaultConfig="editorConfig"
-      mode="simple"
-      v-model="valueHtml"
-      style="height: 400px; overflow-y: hidden"
-      @onCreated="handleCreated"
-    />
-  </div>
+  <new-article-vue @closeDrawer="closeDrawer" :drawerActive="drawerActive"></new-article-vue>
 </template>
 <script lang="ts" setup>
-import { ref, h } from 'vue'
-import { NButton } from 'naive-ui'
-import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-import useEditor from '../../../hooks/root/editor'
+import { ref, h } from 'vue';
+import { NButton } from 'naive-ui';
+import newArticleVue from '../../../components/root/newArticle.vue';
+import { list } from '../../../api/root/article';
 
-let { editorRef, valueHtml, toolbarConfig, editorConfig, handleCreated } = useEditor()
+//数据源
+const data = ref([]);
 
-const data = ref([{ name: 'Wonderwall', craeteTime: '2022-06-01', actions: '' }])
+//回调
+const closeDrawer = e => {
+  drawerActive.value = e;
+};
+
+//抽屉
+let drawerActive = ref(false);
+
+//打开文章编辑页面
+const newArticle = () => {
+  drawerActive.value = !drawerActive.value;
+};
+
+//文章列表数据请求
+const listRes = list();
+listRes.then(res => {
+  console.log(res);
+});
 
 const Columns: any[] = [
   {
-    title: '分类名称',
-    key: 'name'
+    title: '文章标题',
+    key: 'title'
+  },
+  {
+    title: '所属分类',
+    key: 'classify_name'
   },
   {
     title: '创建时间',
-    key: 'craeteTime'
+    key: 'created_at',
+    render(row) {
+      return h('div', {}, new Date(row.updated_at).toLocaleString());
+    }
+  },
+  {
+    title: '修改时间',
+    key: 'updated_at',
+    render(row) {
+      return h('div', {}, new Date(row.updated_at).toLocaleString());
+    }
   },
   {
     title: '操作',
@@ -72,8 +89,8 @@ const Columns: any[] = [
           },
           () => '删除'
         )
-      ]
+      ];
     }
   }
-]
+];
 </script>

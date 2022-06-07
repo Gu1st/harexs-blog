@@ -16,16 +16,21 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import { useStore } from '../../stores/index'
-
+import { useRouter } from 'vue-router'
 const store = useStore()
-
+const router = useRouter()
 let user = reactive({
   username: '',
   password: ''
 })
 
 const loginSystem = () => {
-  store.login(user)
+  const res = store.login(user)
+  res.then(res => {
+    if (res) {
+      router.push('/root')
+    }
+  })
 }
 </script>
 

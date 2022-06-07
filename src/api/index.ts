@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import { getToken } from '../utils/token'
 const service = axios.create({
   baseURL: '',
   timeout: 10000
@@ -7,7 +7,7 @@ const service = axios.create({
 
 service.interceptors.request.use(
   config => {
-    // config.headers.Token = sessionStorage.getItem('token')!
+    ;(config.headers as any).Authorization = getToken() || ''
     return config
   },
   error => {
@@ -20,10 +20,12 @@ service.interceptors.response.use(
   response => {
     switch (response.data.code) {
       case 200:
-        window.$message.success(response.data.msg)
+        if (response.data.msg) {
+          window.$message.success(response.data.msg)
+        }
         break
       case 500:
-        window.$message.error(response.data.msg)
+        window.$message.error(response.data.msg || response.data.data)
         break
       case 408:
       case 403:
@@ -34,8 +36,7 @@ service.interceptors.response.use(
     return response.data
   },
   error => {
-    console.log(error)
-    return Promise.reject()
+    return error.response.data || Promise.reject()
   }
 )
 
