@@ -7,7 +7,7 @@ const service = axios.create({
 
 service.interceptors.request.use(
   config => {
-    ;(config.headers as any).Authorization = getToken() || ''
+    (config.headers as any).Authorization = getToken() || ''
     return config
   },
   error => {

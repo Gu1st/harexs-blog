@@ -2,15 +2,6 @@ import { defineStore } from 'pinia';
 import { login, verify } from '../api/bolg/index';
 import { setToken } from '../utils/token';
 
-interface articleClassifyFace {
-  id: string | number;
-  class_name: string;
-  createdAt?: string;
-  updated_at?: string;
-  created_at?: string;
-  updatedAt?: string;
-}
-
 export const useStore = defineStore('main', {
   state: () => {
     return {
