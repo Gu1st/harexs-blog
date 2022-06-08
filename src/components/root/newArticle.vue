@@ -16,12 +16,13 @@
           <n-input />
         </n-form-item>
         <n-form-item label="分类:">
-          <n-select multiple v-model:value="selectValue" :options="selectOptions" />
+          <n-select multiple v-model:value="articleData.selectValue" :options="selectOptions" />
         </n-form-item>
         <n-form-item label="缩略图:">
           <n-upload
-            action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f"
-            :default-file-list="fileList"
+            :default-upload="false"
+            action="http://localhost:7001/article/upload"
+            :default-file-list="articleData.fileList"
             :max="1"
             list-type="image-card"
             :headers="{Authorization:token!}"
@@ -40,13 +41,13 @@
         <Editor
           :defaultConfig="editorConfig"
           mode="simple"
-          v-model="valueHtml"
+          v-model="articleData.content"
           style="height: 400px; overflow-y: hidden"
           @onCreated="handleCreated"
         />
       </div>
       <template #footer>
-        <n-button type="success">确定</n-button>
+        <n-button type="success" @click="createdArticle">确定</n-button>
         <div style="margin: 0 10px"></div>
         <n-button type="error" @click="closeEvent">关闭</n-button>
       </template>
@@ -54,25 +55,51 @@
   </n-drawer>
 </template>
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
+import { ref, reactive, watchEffect } from 'vue';
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
 import useEditor from '../../hooks/root/editor';
 import { getToken } from '../../utils/token';
 
+//得到分类数据
+import { list } from '../../api/root/classify';
+import { article } from '../../api/root/article';
+
+const articleData = reactive({
+  selectValue: [],
+  title: '',
+  desc: '',
+  fileList: [],
+  content: ''
+});
+
+const ListRes = list();
+let selectOptions = ref([]);
+
+ListRes.then(res => {
+  res.data.forEach(item => {
+    let tmp: any = {};
+    tmp.value = item.id;
+    tmp.label = item.class_name;
+    selectOptions.value.push(tmp);
+  });
+});
+
 const props = defineProps(['drawerActive']);
 const emit = defineEmits(['closeDrawer']);
-let selectValue = ref(null);
 
-const selectOptions = ref([]);
-
-console.log(selectOptions.value);
+//发表文章
+const createdArticle = () => {
+  const res = article(articleData);
+  res.then(res => {
+    console.log(res);
+  });
+};
 
 const closeEvent = () => {
   emit('closeDrawer', false);
 };
 
 let drawerShow = ref(false);
-let fileList = ref([]);
 watchEffect(() => {
   drawerShow.value = props.drawerActive;
 });
@@ -81,5 +108,5 @@ watchEffect(() => {
 const token = getToken();
 
 //编辑器钩子
-let { editorRef, valueHtml, toolbarConfig, editorConfig, handleCreated } = useEditor();
+let { editorRef, toolbarConfig, editorConfig, handleCreated } = useEditor();
 </script>

@@ -1,7 +1,7 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import { getToken } from '../utils/token'
+import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
+import { getToken } from '../utils/token';
 
-const routes = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'index',
@@ -65,26 +65,25 @@ const routes = [
     name: 'NotFound',
     component: () => import('../views/blog/error/index.vue')
   }
-]
+];
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes
-})
+});
 
 //路由全局前置守卫
 router.beforeEach(async (to, from) => {
   if (to.fullPath.includes('root')) {
-    const token = getToken()
+    const token = getToken();
     if (!token) {
-      window.$message.error('当前身份无权限访问')
-      console.log(from)
+      window.$message.error('当前身份无权限访问');
       if (from.path === '/') {
         setTimeout(() => {
-          window.location.href = window.location.origin
-        }, 1000)
+          window.location.href = window.location.origin;
+        }, 1000);
       }
-      return false
+      return false;
     }
     //如果token存在则去验证后再进行跳转 暂时用不到 后端来验证token
     // const res = await store.verify(token)
@@ -95,11 +94,11 @@ router.beforeEach(async (to, from) => {
     //   return false
     // }
   }
-  return true
-})
+  return true;
+});
 // //路由全局后置守卫
 // router.afterEach((to, from) => {
 //   console.log('路由全局后置守卫', to, from);
 // })
 
-export default router
+export default router;
