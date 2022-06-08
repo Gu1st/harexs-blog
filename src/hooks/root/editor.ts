@@ -1,4 +1,4 @@
-import { onBeforeUnmount, ref, shallowRef } from 'vue';
+import { onBeforeUnmount, shallowRef } from 'vue';
 import '@wangeditor/editor/dist/css/style.css';
 import { IEditorConfig } from '@wangeditor/editor';
 
