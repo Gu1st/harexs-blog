@@ -14,7 +14,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('../views/blog/home/index.vue')
       },
       {
-        path: '/category/:id',
+        path: '/category',
         name: 'category',
         component: () => import('../views/blog/category/index.vue')
       },
@@ -24,7 +24,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('../views/blog/search/index.vue')
       },
       {
-        path: '/article/:id',
+        path: '/article',
         name: 'article',
         component: () => import('../views/blog/article/index.vue')
       }

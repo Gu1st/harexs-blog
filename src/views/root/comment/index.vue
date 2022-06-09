@@ -2,19 +2,33 @@
   <n-data-table :columns="Columns" :data="data" :pagination="false" :bordered="false" />
 </template>
 <script lang="ts" setup>
-import { h, ref } from 'vue'
-import { NButton } from 'naive-ui'
+import { h, ref } from 'vue';
+import { NButton } from 'naive-ui';
+import { list } from '../../../api/root/comment';
 
-const data = ref([{ name: 'Wonderwall', craeteTime: '2022-06-01', actions: '' }])
+const ListRes = list();
+ListRes.then(res => {
+  data.value = res.data;
+});
+
+const data = ref([]);
 
 const Columns = [
   {
-    title: '分类名称',
+    title: '评论人',
     key: 'name'
   },
   {
-    title: '创建时间',
-    key: 'craeteTime'
+    title: '评论内容',
+    key: 'content'
+  },
+  {
+    title: '邮箱',
+    key: 'email'
+  },
+  {
+    title: '来源文章',
+    key: 'articleTile'
   },
   {
     title: '操作',
@@ -31,8 +45,8 @@ const Columns = [
           onClick: () => console.log(row)
         },
         () => '删除'
-      )
+      );
     }
   }
-]
+];
 </script>

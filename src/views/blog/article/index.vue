@@ -1,24 +1,31 @@
 <template>
   <div class="bolg">
-    <div class="article-card" v-for="(item, index) in mockData" :key="index">
+    <div class="article-card">
       <div class="article-title">
-        <span>{{ item.title }}</span>
+        <span>{{ articleInfo.title }}</span>
       </div>
       <div class="article-footer">
         <div class="article-date">
-          <span>{{ item.date }}</span
+          <span>gu1st发表于{{ getterDate(articleInfo.created_at) }}</span
           ><span>/</span>
         </div>
         <div class="article-category">
-          <span>{{ item.category }}</span
+          <span>{{ articleInfo.classify_name }}</span
           ><span>/</span>
         </div>
         <div class="article-comment">
-          <span>{{ item.comments }}</span>
+          <span>共{{ articleInfo.comment_num ? articleInfo.comment_num : 0 }}条评论</span>
         </div>
       </div>
-      <div v-if="item.img" class="article-img" :style="{ backgroundImage: `url(${item.img})` }"></div>
-      <div class="article-content" v-html="item.desc"></div>
+      <div
+        v-if="articleInfo.head_img"
+        class="article-img"
+        :style="{ backgroundImage: `url(${articleInfo.head_img})` }"
+      ></div>
+      <div class="article-desc">
+        {{ articleInfo.desc }}
+      </div>
+      <div class="article-content" v-html="articleInfo.content"></div>
     </div>
   </div>
   <!-- 评论组件 -->
@@ -28,23 +35,28 @@
 </template>
 
 <script setup lang="ts">
-import articleComment from '../../../components/article/comment.vue'
-import { ref } from 'vue'
-import { useRoute } from 'vue-router'
-let mockData = ref([
-  {
-    title: '我是一个测试标题',
-    img: 'https://margox-cn-wp-blog-1254052530.file.myqcloud.com/wp-content/uploads/2020/08/repic_banner.jpg',
-    desc: '我是一个用来描述的占位符，总之就是必须要特别长，哈哈我来凑个字数吧!',
-    date: 'gu1st发表于2022-5-31',
-    category: '技术',
-    comments: '共0条评论'
+import articleComment from '../../../components/article/comment.vue';
+import { ref, watchEffect } from 'vue';
+import { useRoute } from 'vue-router';
+import { info } from '../../../api/bolg/article';
+const route = useRoute();
+const articleInfo = ref<any>({});
+const getterDate = at => {
+  return new Date(at).toLocaleDateString().replace('/', '-');
+};
+
+const getInfo = id => {
+  const infoRes = info(id);
+  infoRes.then(res => {
+    articleInfo.value = res.data;
+  });
+};
+
+watchEffect(() => {
+  if (route.query?.id) {
+    getInfo(route.query.id);
   }
-])
-
-const route = useRoute()
-
-console.log('文章页，参数为：', route.params?.id)
+});
 </script>
 
 <style scoped lang="scss">
@@ -59,7 +71,7 @@ console.log('文章页，参数为：', route.params?.id)
   .comment {
     width: auto !important;
     max-width: 100%;
-    margin: 10px 10px 0 10px !important;
+    margin: 10px 20px 0 20px !important;
   }
 }
 
@@ -91,12 +103,12 @@ console.log('文章页，参数为：', route.params?.id)
     border-bottom: 2px dashed #eee;
   }
   .article-title {
-    padding: 10px 0 10px 0;
+    padding: 10px 0 0 0;
     color: #444444;
     border-bottom: 1px dashed #eee;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     span {
-      font-size: 32px;
+      font-size: 36px;
     }
   }
   .article-img {
@@ -106,17 +118,21 @@ console.log('文章页，参数为：', route.params?.id)
     background-repeat: no-repeat;
     background-position: center;
   }
-  .article-content {
-    padding: 10px 0 10px 0;
-    // span { 先保留到时候是富文本返回
-    //   font-size: 16px;
-    // }
+  .article-desc {
+    box-sizing: border-box;
+    padding: 2px 0 2px 20px;
+    color: #777;
+    background-color: #fff;
+    border-left: 4px solid #dddddd;
+    margin: 10px 0 10px 0;
+    font-size: 16px;
   }
   .article-footer {
     display: flex;
     color: #555;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 12px;
+    font-weight: bold;
     margin-bottom: 20px;
     span + span {
       margin-left: 4px;
@@ -131,5 +147,12 @@ console.log('文章页，参数为：', route.params?.id)
   height: 60px;
   margin: 20px;
   box-sizing: border-box;
+}
+
+.article-content {
+  font-size: 16px;
+  // span { 先保留到时候是富文本返回
+  //   font-size: 16px;
+  // }
 }
 </style>

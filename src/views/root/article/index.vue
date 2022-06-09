@@ -6,20 +6,43 @@
   </n-grid>
 
   <n-data-table :columns="Columns" :data="data" :pagination="false" :bordered="false" />
-  <new-article-vue @closeDrawer="closeDrawer" :drawerActive="drawerActive"></new-article-vue>
+  <new-article-vue
+    :editId="editId"
+    @closeDrawer="closeDrawer"
+    :drawerActive="drawerActive"
+  ></new-article-vue>
+  <!-- 分页组件 -->
+  <div class="pagenation">
+    <n-pagination :on-update:page="pageChange" v-model="page" :page-count="pageCount" />
+  </div>
 </template>
 <script lang="ts" setup>
 import { ref, h } from 'vue';
 import { NButton } from 'naive-ui';
 import newArticleVue from '../../../components/root/newArticle.vue';
-import { list } from '../../../api/root/article';
+import { list, del } from '../../../api/root/article';
+
+let page = ref(1);
+let pageCount = ref(5);
 
 //数据源
 const data = ref([]);
 
+//编辑文章时的ID
+let editId = ref('');
+
 //回调
 const closeDrawer = e => {
-  drawerActive.value = e;
+  drawerActive.value = false;
+  if (e) {
+    editId.value = '';
+    getList();
+  }
+};
+
+const pageChange = e => {
+  page.value = e;
+  getList();
 };
 
 //抽屉
@@ -27,14 +50,33 @@ let drawerActive = ref(false);
 
 //打开文章编辑页面
 const newArticle = () => {
+  editId.value = '';
   drawerActive.value = !drawerActive.value;
 };
 
 //文章列表数据请求
-const listRes = list();
-listRes.then(res => {
-  console.log(res);
-});
+const getList = () => {
+  const listRes = list(page.value);
+  listRes.then((res: any) => {
+    data.value = res.data;
+    pageCount.value = Math.ceil(res.total / 7);
+  });
+};
+getList();
+
+//删除文章
+const delArticle = id => {
+  const delRes = del(id);
+  delRes.then(() => {
+    getList();
+  });
+};
+
+//编辑文章
+const editArticle = id => {
+  editId.value = id;
+  drawerActive.value = true;
+};
 
 const Columns: any[] = [
   {
@@ -75,7 +117,7 @@ const Columns: any[] = [
             },
             size: 'small',
             type: 'warning',
-            onClick: () => console.log(row)
+            onClick: () => editArticle(row.id)
           },
           () => '编辑'
         ),
@@ -85,7 +127,7 @@ const Columns: any[] = [
             strong: true,
             size: 'small',
             type: 'error',
-            onClick: () => console.log(row)
+            onClick: () => delArticle(row.id)
           },
           () => '删除'
         )
@@ -94,3 +136,14 @@ const Columns: any[] = [
   }
 ];
 </script>
+
+<style scoped lang="scss">
+.pagenation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  margin: 20px;
+  box-sizing: border-box;
+}
+</style>

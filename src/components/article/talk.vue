@@ -2,25 +2,39 @@
   <div class="talk">
     <div class="talk-header">发表评论</div>
     <div class="talk-content">
-      <n-input type="textarea" maxlength="100" show-count />
+      <n-input v-model:value="formData.content" type="textarea" maxlength="100" show-count />
     </div>
     <div class="talk-footer">
       <div class="talk-footer-user">
         <span>名称*</span>
-        <n-input type="text" />
+        <n-input v-model:value="formData.name" maxlength="50" type="text" />
       </div>
       <div class="talk-footer-email">
         <span>邮件*</span>
-        <n-input type="text" />
+        <n-input v-model:value="formData.email" maxlength="50" type="text" />
       </div>
     </div>
     <div class="talk-send">
-      <n-button type="primary"> 发表评论 </n-button>
+      <n-button type="primary" @click="sendComment"> 发表评论 </n-button>
     </div>
   </div>
 </template>
 
-<script setup lang="scss"></script>
+<script setup lang="ts">
+import { reactive } from 'vue';
+
+const formData = reactive({
+  content: '',
+  name: '',
+  email: '',
+  articleid: '',
+  upper_id: ''
+});
+
+const sendComment = () => {
+  console.log(1);
+};
+</script>
 
 <style lang="scss" scoped>
 .talk {

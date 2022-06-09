@@ -5,25 +5,27 @@
     </div>
     <transition name="mode-fade" mode="out-in">
       <div class="header-slideMenu" v-if="sliderMenu">
-        <router-link
+        <a
           v-for="(item, index) in menuList"
           :key="index"
-          exact-active-class="router-link-exact-active2"
-          :to="item.url"
-          >{{ item.title }}</router-link
+          @click="goPage(item.url, item.query)"
+          :style="{ color: route.path === item.url ? '#18a058' : '' }"
+          >{{ item.title }}</a
         >
       </div>
     </transition>
     <img class="header-logo" :src="dog" @click="goHome" />
-    <div class="header-title">Gu1st's Blog</div>
+    <div class="header-title" @click="goHome">Gu1st's Blog</div>
     <div class="logo-diver"></div>
     <div class="header-nav">
-      <router-link
+      <a
         v-for="(item, index) in menuList"
         :key="index"
-        :to="item.url"
-        exact-active-class="router-link-exact-active1"
-        >{{ item.title }}</router-link
+        @click="goPage(item.url, item.query)"
+        :style="{
+          color: route.path === item.url && route.query?.cid === item.query ? '#18a058' : ''
+        }"
+        >{{ item.title }}</a
       >
     </div>
     <n-input
@@ -41,59 +43,69 @@
 </template>
 
 <script setup lang="ts">
-import { Search, MenuOutline } from '@vicons/ionicons5'
-import { useRouter } from 'vue-router'
-import dog from '../../assets/dog.jpg'
-import { ref } from 'vue'
-
-let sliderMenu = ref(false)
-
-const router = useRouter()
-
+import { Search, MenuOutline } from '@vicons/ionicons5';
+import { useRouter, useRoute } from 'vue-router';
+import dog from '../../assets/dog.jpg';
+import { ref } from 'vue';
+let sliderMenu = ref(false);
+const route = useRoute();
+const router = useRouter();
+const goPage = (url, query) => {
+  sliderMenu.value = false;
+  router.push({
+    path: url,
+    query: {
+      cid: query
+    }
+  });
+};
 //显示和隐藏菜单
 const showsliderMenu = () => {
-  sliderMenu.value = !sliderMenu.value
-}
+  sliderMenu.value = !sliderMenu.value;
+};
 
 //搜索框按下回车
 const searchSomething = e => {
-  let content: string = e.target.value.trim()
+  let content: string = e.target.value.trim();
   if (content.length === 0) {
-    return
+    return;
   }
-  router.push({
+  router.replace({
     path: `/search/${content}`
-  })
-}
+  });
+};
 
 //返回首页
 const goHome = () => {
   router.push({
     path: '/home'
-  })
-}
+  });
+};
 
 //当页面宽度变化的时候判断是否显示菜单
 window.addEventListener('resize', () => {
   if (window.innerWidth > 768) {
-    sliderMenu.value = false
+    sliderMenu.value = false;
   }
-})
+});
 
 let menuList = ref([
   {
     title: '首页',
-    url: '/home'
+    url: '/home',
+    query: ''
   },
   {
     title: '技术',
-    url: '/category/pro'
+    url: '/category',
+    query: 'eecb7a28-14ac-4cb4-980b-fc0bb6924d21'
   },
   {
-    title: '杂谈',
-    url: '/category/talk'
+    title: '生活',
+    url: '/category',
+    query: '9021bbff-8be4-4d54-aa6e-0829feaff9a1'
   }
-])
+]);
 </script>
 
 <style scoped lang="scss">
@@ -104,6 +116,7 @@ let menuList = ref([
     display: none !important;
   }
   .header-wrap {
+    position: fixed;
     justify-content: center;
     .header-slide {
       display: flex !important;
@@ -118,6 +131,8 @@ let menuList = ref([
   height: 60px;
   border-bottom: 1px solid #eee;
   box-shadow: 0px 0px 6px 1px #e5e5e5;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   .header-slideMenu {
     position: absolute;
     top: 61px;
@@ -157,6 +172,10 @@ let menuList = ref([
     height: 40px;
     margin: 0 20px 0 20px;
     border-radius: 20px;
+    cursor: pointer;
+  }
+  .header-title {
+    cursor: pointer;
   }
   .header-search {
     width: 200px;
@@ -177,6 +196,7 @@ let menuList = ref([
       color: #333;
       border-bottom: 2px solid transparent;
       box-sizing: border-box;
+      cursor: pointer;
     }
     a:hover {
       color: #18a058;
