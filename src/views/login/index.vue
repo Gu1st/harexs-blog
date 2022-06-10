@@ -6,7 +6,7 @@
         <n-input v-model:value="user.username" type="text" placeholder="登录账号" />
       </div>
       <div class="login-center-pwd">
-        <n-input v-model:value="user.password" type="text" placeholder="登录密码" />
+        <n-input type="password" v-model:value="user.password" placeholder="登录密码" />
       </div>
       <n-button @click="loginSystem" class="login-center-btn" type="primary"> 登 录 </n-button>
     </div>
@@ -14,24 +14,24 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
-import { useStore } from '../../stores/index'
-import { useRouter } from 'vue-router'
-const store = useStore()
-const router = useRouter()
+import { reactive } from 'vue';
+import { useStore } from '../../stores/index';
+import { useRouter } from 'vue-router';
+const store = useStore();
+const router = useRouter();
 let user = reactive({
   username: '',
   password: ''
-})
+});
 
 const loginSystem = () => {
-  const res = store.login(user)
+  const res = store.login(user);
   res.then(res => {
     if (res) {
-      router.push('/root')
+      router.push('/root');
     }
-  })
-}
+  });
+};
 </script>
 
 <style scoped lang="scss">

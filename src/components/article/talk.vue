@@ -10,7 +10,7 @@
         <n-input v-model:value="formData.name" maxlength="50" type="text" />
       </div>
       <div class="talk-footer-email">
-        <span>邮件*</span>
+        <span>邮件</span>
         <n-input v-model:value="formData.email" maxlength="50" type="text" />
       </div>
     </div>
@@ -21,8 +21,18 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, watchEffect } from 'vue';
+import { newComment } from '../../api/bolg/comment';
+import { useRoute } from 'vue-router';
 
+const emit = defineEmits(['reloadComment']);
+const props = defineProps({
+  upperId: {
+    defalut: '',
+    type: String
+  }
+});
+const route = useRoute();
 const formData = reactive({
   content: '',
   name: '',
@@ -31,8 +41,33 @@ const formData = reactive({
   upper_id: ''
 });
 
+watchEffect(() => {
+  if (props.upperId) {
+    formData.upper_id = props.upperId;
+  }
+});
+
+const EmailReg = /^[a-zA-Z0-9-]+@[a-zA-Z0-9-]+\.[a-zA-Z]+$/g;
 const sendComment = () => {
-  console.log(1);
+  const tmpEmail = formData.email.trim();
+  if (tmpEmail.length > 0 && !EmailReg.test(tmpEmail)) {
+    window.$message.warning('邮箱格式不正确');
+    return;
+  }
+  if (formData.content.trim() === '' || formData.name.trim() === '') {
+    window.$message.warning('请补全您的评论信息');
+    return;
+  }
+  if (typeof route.query.id === 'string') {
+    formData.articleid = route.query.id;
+  }
+  const newRes = newComment(formData);
+  newRes.then(() => {
+    window.$message.success('评论成功,审核后可见');
+    //触发列表刷新
+    emit('reloadComment');
+  });
+  //刷新评论列表
 };
 </script>
 

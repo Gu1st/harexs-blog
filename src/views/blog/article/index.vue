@@ -29,8 +29,11 @@
     </div>
   </div>
   <!-- 评论组件 -->
-  <div class="comment">
-    <article-comment></article-comment>
+  <div class="comment" v-if="route.query?.id">
+    <article-comment
+      @reloadCommentList="reloadCommentList"
+      :commentData="commentData"
+    ></article-comment>
   </div>
 </template>
 
@@ -39,12 +42,15 @@ import articleComment from '../../../components/article/comment.vue';
 import { ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import { info } from '../../../api/bolg/article';
+import { commentList } from '../../../api/bolg/comment';
+
 const route = useRoute();
 const articleInfo = ref<any>({});
 const getterDate = at => {
   return new Date(at).toLocaleDateString().replace('/', '-');
 };
 
+//得到文章信息
 const getInfo = id => {
   const infoRes = info(id);
   infoRes.then(res => {
@@ -52,9 +58,44 @@ const getInfo = id => {
   });
 };
 
+const reloadCommentList = () => {
+  getCommentList(route.query.id);
+};
+interface commentDataFace {
+  article_id: string;
+  article_title: string;
+  content: string;
+  createdAt: string;
+  created_at: string;
+  email: string;
+  id: string;
+  name: string;
+  updatedAt: string;
+  updated_at: string;
+  upper_id: string;
+  reply?: boolean;
+  replyList?: any[];
+  childCount?: number | string;
+}
+//评论数据
+const commentData = ref<commentDataFace[]>([]);
+
+//还要带出评论列表
+const getCommentList = id => {
+  const listRes = commentList(id);
+  listRes.then((res: any) => {
+    res.data.forEach((item, index) => {
+      item.childCount = res.countAry[index];
+      item.seeChildren = false;
+    });
+    commentData.value = res.data;
+  });
+};
+
 watchEffect(() => {
   if (route.query?.id) {
     getInfo(route.query.id);
+    getCommentList(route.query.id);
   }
 });
 </script>

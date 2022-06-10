@@ -3,25 +3,43 @@
     <n-gi>
       <div class="dashboard-item">
         <div class="dashboard-item-name">文章数量</div>
-        <div class="dashboard-item-num">121</div>
+        <div class="dashboard-item-num">{{ info.articleCount }}</div>
       </div>
     </n-gi>
     <n-gi>
       <div class="dashboard-item">
         <div class="dashboard-item-name">评论数量</div>
-        <div class="dashboard-item-num">23</div>
+        <div class="dashboard-item-num">{{ info.commentCount }}</div>
       </div>
     </n-gi>
     <n-gi>
       <div class="dashboard-item">
         <div class="dashboard-item-name">分类数量</div>
-        <div class="dashboard-item-num">5</div>
+        <div class="dashboard-item-num">{{ info.classifyCount }}</div>
       </div>
     </n-gi>
   </n-grid>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { home } from '../../../api/root/home';
+import { ref } from 'vue';
+const info = ref({
+  articleCount: 0,
+  commentCount: 0,
+  classifyCount: 0
+});
+const getInfo = () => {
+  const res = home();
+  res.then(res => {
+    info.value.articleCount = res.data.articleCount;
+    info.value.commentCount = res.data.commentCount;
+    info.value.classifyCount = res.data.classifyCount;
+  });
+};
+
+getInfo();
+</script>
 
 <style scoped lang="scss">
 .dashboard-item {

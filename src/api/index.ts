@@ -43,6 +43,7 @@ service.interceptors.response.use(
     return response.data;
   },
   error => {
+    window.$message.error(error.response.msg || '请求失败');
     return error.response.data || Promise.reject();
   }
 );
