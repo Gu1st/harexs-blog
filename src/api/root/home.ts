@@ -1,5 +1,6 @@
 import gu1stApi from '../index';
+const IP = import.meta.env.VITE_SERVERIP;
 
 export function home() {
-  return gu1stApi.get('http://localhost:7001/home');
+  return gu1stApi.get(`${IP}/home`);
 }
