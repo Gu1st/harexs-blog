@@ -8,34 +8,18 @@
 
 <script setup lang="ts">
 import blogList from '../../../components/home/blogList.vue';
+import { watchEffect } from 'vue';
+import { useCategory } from '../../../hooks/blog/category';
 import { useRoute } from 'vue-router';
-import { articleAndClassify } from '../../../api/bolg/category';
-import { ref, watchEffect } from 'vue';
-let page = ref(1);
-let pageCount = ref(5);
-
+const { page, pageCount, listData, getList, pageChange } = useCategory();
 const route = useRoute();
-let listData = ref([]);
 
-const getList = () => {
-  const ListRes = articleAndClassify(route.query?.cid, page.value);
-  ListRes.then((res: any) => {
-    listData.value = res.data;
-    pageCount.value = Math.ceil(res.total / 7);
-  });
-};
+//监听cid变化 重新加载数据
 watchEffect(() => {
   if (route.query?.cid) {
     getList();
   }
 });
-
-const pageChange = e => {
-  page.value = e;
-  getList();
-};
-
-console.log('分类页，参数为：', route.query?.cid);
 </script>
 
 <style scoped lang="scss">

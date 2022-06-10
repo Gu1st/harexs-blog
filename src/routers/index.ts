@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { getToken } from '../utils/token';
 
 const routes: RouteRecordRaw[] = [
@@ -68,7 +68,7 @@ const routes: RouteRecordRaw[] = [
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: import.meta.env.VITE_ROUTERMODE === 'prod' ? createWebHistory() : createWebHashHistory(),
   routes
 });
 

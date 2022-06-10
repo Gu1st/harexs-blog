@@ -1,6 +1,5 @@
 import { onBeforeUnmount, shallowRef } from 'vue';
 import '@wangeditor/editor/dist/css/style.css';
-import { IEditorConfig } from '@wangeditor/editor';
 
 export default function () {
   // 编辑器实例，必须用 shallowRef，重要！
@@ -8,7 +7,7 @@ export default function () {
 
   const toolbarConfig = {};
 
-  const editorConfig: Partial<IEditorConfig> = { MENU_CONF: {} };
+  const editorConfig: any = { MENU_CONF: {} };
   editorConfig.placeholder = '请输入内容...';
   editorConfig.MENU_CONF['uploadImage'] = {
     server: 'http://localhost:7001/upload',

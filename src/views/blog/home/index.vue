@@ -8,26 +8,12 @@
 
 <script setup lang="ts">
 import blogList from '../../../components/home/blogList.vue';
-import { list } from '../../../api/bolg/home';
-import { ref } from 'vue';
-let page = ref(1);
-let pageCount = ref(5);
+import { useHome } from '../../../hooks/blog/home';
 
-let listData = ref([]);
+const { page, pageCount, listData, getList, pageChange } = useHome();
 
-const getList = () => {
-  const ListRes = list(page.value);
-  ListRes.then((res: any) => {
-    listData.value = res.data;
-    pageCount.value = Math.ceil(res.total / 7);
-  });
-};
+//加载数据
 getList();
-
-const pageChange = e => {
-  page.value = e;
-  getList();
-};
 </script>
 
 <style scoped lang="scss">

@@ -81,7 +81,7 @@ const handleRemove = () => {
   articleData.file = '';
 };
 
-const handleFinish = file => {
+const handleFinish: any = file => {
   let response = JSON.parse(file.event.target.response);
   response = response.data.split('\\');
   response.splice(0, 1);

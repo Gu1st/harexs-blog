@@ -9,7 +9,9 @@
           v-for="(item, index) in menuList"
           :key="index"
           @click="goPage(item.url, item.query)"
-          :style="{ color: route.path === item.url ? '#18a058' : '' }"
+          :style="{
+            color: route.path === item.url && route.query?.cid === item.query ? '#18a058' : ''
+          }"
           >{{ item.title }}</a
         >
       </div>
@@ -23,7 +25,12 @@
         :key="index"
         @click="goPage(item.url, item.query)"
         :style="{
-          color: route.path === item.url && route.query?.cid === item.query ? '#18a058' : ''
+          color:
+            route.path === '/home' && item.url === '/home'
+              ? '#18a058'
+              : route.path === item.url && route.query?.cid === item.query
+              ? '#18a058'
+              : ''
         }"
         >{{ item.title }}</a
       >

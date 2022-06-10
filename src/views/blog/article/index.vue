@@ -39,62 +39,22 @@
 
 <script setup lang="ts">
 import articleComment from '../../../components/article/comment.vue';
-import { ref, watchEffect } from 'vue';
+import { watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
-import { info } from '../../../api/bolg/article';
-import { commentList } from '../../../api/bolg/comment';
-
+import { useArticle, useCommentList } from '../../../hooks/blog/article';
+import { getterDate } from '../../../utils/getter';
 const route = useRoute();
-const articleInfo = ref<any>({});
-const getterDate = at => {
-  return new Date(at).toLocaleDateString().replace('/', '-');
-};
+//文章相关HOOKS
+const { articleInfo, getInfo } = useArticle();
+//评论列表相关HOOKS
+const { reloadCommentList, commentData, getCommentList } = useCommentList();
 
-//得到文章信息
-const getInfo = id => {
-  const infoRes = info(id);
-  infoRes.then(res => {
-    articleInfo.value = res.data;
-  });
-};
-
-const reloadCommentList = () => {
-  getCommentList(route.query.id);
-};
-interface commentDataFace {
-  article_id: string;
-  article_title: string;
-  content: string;
-  createdAt: string;
-  created_at: string;
-  email: string;
-  id: string;
-  name: string;
-  updatedAt: string;
-  updated_at: string;
-  upper_id: string;
-  reply?: boolean;
-  replyList?: any[];
-  childCount?: number | string;
-}
-//评论数据
-const commentData = ref<commentDataFace[]>([]);
-
-//还要带出评论列表
-const getCommentList = id => {
-  const listRes = commentList(id);
-  listRes.then((res: any) => {
-    res.data.forEach((item, index) => {
-      item.childCount = res.countAry[index];
-      item.seeChildren = false;
-    });
-    commentData.value = res.data;
-  });
-};
-
+//监听路由变化 重新加载数据
 watchEffect(() => {
   if (route.query?.id) {
+    //加载文章
     getInfo(route.query.id);
+    //加载评论列表
     getCommentList(route.query.id);
   }
 });

@@ -9,33 +9,18 @@
 <script setup lang="ts">
 import blogList from '../../../components/home/blogList.vue';
 import { useRoute } from 'vue-router';
-import { ref, watchEffect } from 'vue';
-import { articleAndSearch } from '../../../api/bolg/search';
+import { watchEffect } from 'vue';
+import { useSearch } from '../../../hooks/blog/search';
 
 const route = useRoute();
+const { page, pageCount, listData, getList, pageChange } = useSearch();
 
-let page = ref(1);
-let pageCount = ref(5);
-
-let listData = ref([]);
-
-const getList = () => {
-  const ListRes = articleAndSearch(page.value, route.params?.content);
-  ListRes.then((res: any) => {
-    listData.value = res.data;
-    pageCount.value = Math.ceil(res.total / 7);
-  });
-};
+//监听搜索文本变化
 watchEffect(() => {
   if (route.params?.content) {
     getList();
   }
 });
-
-const pageChange = e => {
-  page.value = e;
-  getList();
-};
 </script>
 
 <style scoped lang="scss">

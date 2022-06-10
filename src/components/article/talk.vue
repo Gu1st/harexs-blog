@@ -41,6 +41,15 @@ const formData = reactive({
   upper_id: ''
 });
 
+//清空评论表单Fn
+const clearForm = () => {
+  formData.content = '';
+  formData.name = '';
+  formData.email = '';
+  formData.articleid = '';
+  formData.upper_id = '';
+};
+
 watchEffect(() => {
   if (props.upperId) {
     formData.upper_id = props.upperId;
@@ -64,6 +73,8 @@ const sendComment = () => {
   const newRes = newComment(formData);
   newRes.then(() => {
     window.$message.success('评论成功,审核后可见');
+    //清空表单
+    clearForm();
     //触发列表刷新
     emit('reloadComment');
   });
