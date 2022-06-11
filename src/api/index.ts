@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { getToken } from '../utils/token';
-
 function isRoot() {
   return location.href.includes('root');
 }
