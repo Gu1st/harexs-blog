@@ -6,7 +6,12 @@
         <n-input v-model:value="user.username" type="text" placeholder="登录账号" />
       </div>
       <div class="login-center-pwd">
-        <n-input type="password" v-model:value="user.password" placeholder="登录密码" />
+        <n-input
+          type="password"
+          v-model:value="user.password"
+          @keydown.enter="loginSystem"
+          placeholder="登录密码"
+        />
       </div>
       <n-button @click="loginSystem" class="login-center-btn" type="primary"> 登 录 </n-button>
     </div>
