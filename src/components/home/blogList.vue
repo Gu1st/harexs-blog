@@ -1,43 +1,47 @@
 <template>
-  <div class="bolg" v-if="ListRes.length">
-    <div class="article-card" v-for="(item, index) in ListRes" :key="index">
-      <div class="article-title" @click="seeDetails(item.id)">
-        <span>{{ item.title }}</span>
-      </div>
-      <div
-        v-if="item.head_img"
-        class="article-img"
-        :style="{ backgroundImage: `url(${item.head_img})` }"
-      ></div>
-      <div class="article-desc">
-        <span>{{ item.desc }}</span>
-      </div>
-      <div class="article-footer">
-        <div class="article-date">
-          <span>gu1st发表于{{ getterDate(item.created_at) }}</span
-          ><span>/</span>
+  <transition-group name="list">
+    <div class="bolg" v-if="ListRes.length">
+      <div class="article-card" v-for="(item, index) in ListRes" :key="index">
+        <div class="article-title" @click="seeDetails(item.id)">
+          <span>{{ item.title }}</span>
         </div>
-        <div class="article-category">
-          <span v-for="(items, indexs) in item.classifyNameAndId" :key="indexs">
-            <span @click="classifyEvent(items.id)" class="article-category-name">{{
-              items.name
-            }}</span>
-            <span class="article-category-break" v-if="indexs !== item.classifyNameAndId.length - 1"
-              >,</span
-            >
-          </span>
-          <span>/</span>
+        <div
+          v-if="item.head_img"
+          class="article-img"
+          :style="{ backgroundImage: `url(${item.head_img})` }"
+        ></div>
+        <div class="article-desc">
+          <span>{{ item.desc }}</span>
         </div>
-        <div class="article-comment">
-          <span>{{ item.comment_num ? item.comment_num : 0 }}条评论</span>
+        <div class="article-footer">
+          <div class="article-date">
+            <span>gu1st发表于{{ getterDate(item.created_at) }}</span
+            ><span>/</span>
+          </div>
+          <div class="article-category">
+            <span v-for="(items, indexs) in item.classifyNameAndId" :key="indexs">
+              <span @click="classifyEvent(items.id)" class="article-category-name">{{
+                items.name
+              }}</span>
+              <span
+                class="article-category-break"
+                v-if="indexs !== item.classifyNameAndId.length - 1"
+                >,</span
+              >
+            </span>
+            <span>/</span>
+          </div>
+          <div class="article-comment">
+            <span>{{ item.comment_num ? item.comment_num : 0 }}条评论</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="noData" v-else>
-    <span>暂无内容,去别的地方看看?</span>
-    <router-link to="/" style="font-size: 14px">返回首页</router-link>
-  </div>
+    <div class="noData" v-else>
+      <span>暂无内容,去别的地方看看?</span>
+      <router-link to="/" style="font-size: 14px">返回首页</router-link>
+    </div>
+  </transition-group>
 </template>
 
 <script setup lang="ts">
@@ -169,5 +173,15 @@ const classifyEvent = cid => {
       margin-right: 4px;
     }
   }
+}
+
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
 }
 </style>
