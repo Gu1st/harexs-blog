@@ -10,7 +10,7 @@ export default function () {
   const editorConfig: any = { MENU_CONF: {} };
   editorConfig.placeholder = '请输入内容...';
   editorConfig.MENU_CONF['uploadImage'] = {
-    server: 'http://localhost:7001/upload',
+    server: `${import.meta.env.VITE_SERVERIP}/upload`,
     // 单个文件上传成功之后
     // 自定义插入图片
     customInsert(res: any, insertFn) {

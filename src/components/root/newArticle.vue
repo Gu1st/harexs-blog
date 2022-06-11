@@ -20,7 +20,7 @@
         </n-form-item>
         <n-form-item label="缩略图:">
           <n-upload
-            action="http://localhost:7001/upload"
+            :action="uploadUrl"
             :max="1"
             list-type="image-card"
             v-model:file-list="fileList"
@@ -65,6 +65,8 @@ import { UploadFileInfo } from 'naive-ui';
 //得到分类数据
 import { list } from '../../api/root/classify';
 import { article, info, update } from '../../api/root/article';
+
+const uploadUrl = `${import.meta.env.VITE_SERVERIP}/upload`;
 
 const articleData = reactive({
   selectValue: [],
