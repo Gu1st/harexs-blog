@@ -1,12 +1,7 @@
 <template>
   <div class="bolg" v-if="ListRes.length">
-    <div
-      @click="seeDetails(item.id)"
-      class="article-card"
-      v-for="(item, index) in ListRes"
-      :key="index"
-    >
-      <div class="article-title">
+    <div class="article-card" v-for="(item, index) in ListRes" :key="index">
+      <div class="article-title" @click="seeDetails(item.id)">
         <span>{{ item.title }}</span>
       </div>
       <div
@@ -23,8 +18,15 @@
           ><span>/</span>
         </div>
         <div class="article-category">
-          <span>{{ item.classify_name }}</span
-          ><span>/</span>
+          <span v-for="(items, indexs) in item.classifyNameAndId" :key="indexs">
+            <span @click="classifyEvent(items.id)" class="article-category-name">{{
+              items.name
+            }}</span>
+            <span class="article-category-break" v-if="indexs !== item.classifyNameAndId.length - 1"
+              >,</span
+            >
+          </span>
+          <span>/</span>
         </div>
         <div class="article-comment">
           <span>{{ item.comment_num ? item.comment_num : 0 }}条评论</span>
@@ -41,21 +43,40 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
+import { getterDate } from '../../utils/getter';
 const props = defineProps(['listData']);
 const router = useRouter();
 let ListRes = ref<any[]>([]);
 watchEffect(() => {
   ListRes.value = props.listData;
+  // 将分类名称以及ID 转为数组显示
+  ListRes.value.forEach(item => {
+    item.classify_name = item.classify_name.split(',');
+    item.classify_id = item.classify_id.split(',');
+    item.classifyNameAndId = item.classify_name.map((items, index) => {
+      return {
+        name: items,
+        id: item.classify_id[index]
+      };
+    });
+  });
 });
-const getterDate = at => {
-  return new Date(at).toLocaleDateString().replace('/', '-');
-};
 
+//点击查看详情
 const seeDetails = id => {
   router.push({
     path: '/article',
     query: {
       id
+    }
+  });
+};
+
+const classifyEvent = cid => {
+  router.push({
+    path: '/category',
+    query: {
+      cid
     }
   });
 };
@@ -99,12 +120,12 @@ const seeDetails = id => {
   max-width: 100%;
   margin: 30px auto 0 auto;
   .article-card {
-    cursor: pointer;
     margin-bottom: 30px;
     padding-bottom: 30px;
     border-bottom: 2px dashed #eee;
   }
   .article-title {
+    cursor: pointer;
     padding: 10px 0 10px 0;
     color: #444444;
     span {
@@ -126,6 +147,16 @@ const seeDetails = id => {
     span {
       font-size: 14px;
       color: #666666;
+    }
+  }
+  .article-category-break {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+  }
+  .article-category-name {
+    cursor: pointer;
+    &:hover {
+      color: #18a058;
     }
   }
   .article-footer {

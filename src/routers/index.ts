@@ -11,21 +11,33 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/home',
         name: 'home',
+        meta: {
+          title: '首页'
+        },
         component: () => import('../views/blog/home/index.vue')
       },
       {
         path: '/category',
         name: 'category',
+        meta: {
+          title: '分类页'
+        },
         component: () => import('../views/blog/category/index.vue')
       },
       {
         path: '/search/:content',
         name: 'search',
+        meta: {
+          title: '搜索页'
+        },
         component: () => import('../views/blog/search/index.vue')
       },
       {
         path: '/article',
         name: 'article',
+        meta: {
+          title: '文章详情'
+        },
         component: () => import('../views/blog/article/index.vue')
       }
     ]
@@ -39,30 +51,52 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'dashboard',
         name: 'root_dashboard',
+        meta: {
+          title: '后台首页'
+        },
         component: () => import('../views/root/dashboard/index.vue')
       },
       {
         path: 'category',
         name: 'root_category',
+        meta: {
+          title: '分类管理'
+        },
         component: () => import('../views/root/category/index.vue')
       },
       {
         path: 'comment',
         name: 'root_comment',
+        meta: {
+          title: '评论管理'
+        },
         component: () => import('../views/root/comment/index.vue')
       },
       {
         path: 'article',
         name: 'root_article',
+        meta: {
+          title: '文章管理'
+        },
         component: () => import('../views/root/article/index.vue')
       }
     ]
   },
-  { path: '/login', name: 'login', component: () => import('../views/login/index.vue') },
+  {
+    path: '/login',
+    name: 'login',
+    meta: {
+      title: '登录页'
+    },
+    component: () => import('../views/login/index.vue')
+  },
 
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
+    meta: {
+      title: '404 Page'
+    },
     component: () => import('../views/blog/error/index.vue')
   }
 ];
@@ -74,6 +108,9 @@ const router = createRouter({
 
 //路由全局前置守卫
 router.beforeEach(async (to, from) => {
+  if (to.meta) {
+    document.title = `Gu1st's Blog` + ' - ' + (to.meta.title as string);
+  }
   if (to.fullPath.includes('root')) {
     const token = getToken();
     if (!token) {
