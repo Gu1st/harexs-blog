@@ -151,7 +151,17 @@ watchEffect(() => {
 }
 
 .article-content {
-  font-size: 16px;
+  :deep(table) {
+    border-collapse: collapse;
+  }
+  :deep(td) {
+    border: 1px solid #ccc;
+    text-align: center;
+  }
+  :deep(th) {
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+  }
   // span { 先保留到时候是富文本返回
   //   font-size: 16px;
   // }
