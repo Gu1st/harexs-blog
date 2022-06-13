@@ -24,15 +24,28 @@ import { useStore } from '../../stores/index';
 import { useRouter } from 'vue-router';
 const store = useStore();
 const router = useRouter();
-let user = reactive({
+
+interface userFace {
+  username: string;
+  password: string;
+}
+
+let user: userFace = reactive({
   username: '',
   password: ''
 });
+
+//页面setup后加载账号
+const getUser = localStorage.getItem('gu1st_usr');
+if (getUser) {
+  user.username = getUser;
+}
 
 const loginSystem = () => {
   const res = store.login(user);
   res.then(res => {
     if (res) {
+      window.localStorage.setItem('gu1st_usr', user.username);
       router.push('/root');
     }
   });

@@ -6,13 +6,15 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-const router = useRouter()
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const loginout = () => {
-  router.push({
+  //清除用户的Token
+  localStorage.removeItem('gu1st_auth');
+  router.replace({
     path: '/login'
-  })
-}
+  });
+};
 </script>
 
 <style scoped lang="scss">

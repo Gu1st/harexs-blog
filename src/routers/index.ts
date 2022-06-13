@@ -107,29 +107,28 @@ const router = createRouter({
 });
 
 //路由全局前置守卫
-router.beforeEach(async (to, from) => {
+router.beforeEach(async to => {
   if (to.meta) {
     document.title = `Gu1st's Blog` + ' - ' + (to.meta.title as string);
   }
+  //  如果要去后台则对token进行验证 6.13 将会话存储为本地存储
   if (to.fullPath.includes('root')) {
     const token = getToken();
+    //token不存在则直接失败返回
     if (!token) {
       window.$message.error('当前身份无权限访问');
-      if (from.path === '/') {
-        setTimeout(() => {
-          window.location.href = window.location.origin;
-        }, 1000);
-      }
       return false;
+    } else {
+      return true;
+      //如果token存在则去验证后再进行跳转 废弃 直接跳转 验证交给后端
+      // const res = await store.verify(token)
+      // if (res) {
+      //   return true
+      // } else {
+      //   window.$message.error('当前身份已过期，请重新登录');
+      //   return false
+      // }
     }
-    //如果token存在则去验证后再进行跳转 暂时用不到 后端来验证token
-    // const res = await store.verify(token)
-    // if (res) {
-    //   return true
-    // } else {
-    //   window.$message.error('当前身份无权限访问')
-    //   return false
-    // }
   }
   return true;
 });
