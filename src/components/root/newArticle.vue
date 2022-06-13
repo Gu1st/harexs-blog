@@ -85,7 +85,8 @@ const handleRemove = () => {
 
 const handleFinish: any = file => {
   let response = JSON.parse(file.event.target.response);
-  response = response.data.split('\\');
+  //window下返回的是 \\ 的路径 linux是/
+  response = import.meta.env.PROD ? response.data.split('/') : response.data.split('\\');
   response.splice(0, 1);
   response = import.meta.env.VITE_SERVERIP + '/' + response.join('/');
   articleData.file = response;

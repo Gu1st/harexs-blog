@@ -38,7 +38,6 @@ export default function () {
   });
   // 编辑器回调函数
   const handleCreated = editor => {
-    console.log('created', editor);
     editorRef.value = editor; // 记录 editor 实例，重要！
   };
 
