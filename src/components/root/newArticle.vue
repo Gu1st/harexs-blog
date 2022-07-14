@@ -32,7 +32,7 @@
           </n-upload>
         </n-form-item>
       </n-form>
-      <div style="border: 1px solid #ccc; margin-top: 10px;margin-bottom: 40px; z-index: 100">
+      <div style="border: 1px solid #ccc; margin-top: 10px; margin-bottom: 40px; z-index: 100">
         <Toolbar
           :editor="editorRef"
           :defaultConfig="toolbarConfig"
@@ -141,7 +141,7 @@ watchEffect(() => {
           url: res.data.head_img
         }
       ];
-      articleData.selectValue = res.data.classify_id.split(',');
+      articleData.selectValue = res.data.classify_id.split(',').map(str => parseInt(str));
       articleData.title = res.data.title;
       articleData.desc = res.data.desc;
       articleData.file = res.data.file;
