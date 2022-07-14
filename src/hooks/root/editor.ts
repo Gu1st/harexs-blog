@@ -9,6 +9,17 @@ export default function () {
 
   const editorConfig: any = { MENU_CONF: {} };
   editorConfig.placeholder = '请输入内容...';
+  editorConfig.MENU_CONF['codeSelectLang'] = {
+    // 代码语言
+    codeLangs: [
+      { text: 'CSS', value: 'css' },
+      { text: 'HTML', value: 'html' },
+      { text: 'XML', value: 'xml' },
+      { text: 'JAVASCRIPT', value: 'javascript' },
+      { text: 'TYPESCRIPT', value: 'typescript' }
+      // 其他
+    ]
+  };
   editorConfig.MENU_CONF['uploadImage'] = {
     server: `${import.meta.env.VITE_SERVERIP}/upload`,
     // 单个文件上传成功之后
