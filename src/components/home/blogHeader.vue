@@ -59,6 +59,10 @@ const route = useRoute();
 const router = useRouter();
 const goPage = (url, query) => {
   sliderMenu.value = false;
+  if (url === '/yuque') {
+    window.location.href = 'https://www.yuque.com/gu1st';
+    return;
+  }
   router.push({
     path: url,
     query: {
@@ -103,14 +107,9 @@ let menuList = ref([
     query: ''
   },
   {
-    title: '技术',
-    url: '/category',
-    query: 'eecb7a28-14ac-4cb4-980b-fc0bb6924d21'
-  },
-  {
-    title: '生活',
-    url: '/category',
-    query: '9021bbff-8be4-4d54-aa6e-0829feaff9a1'
+    title: '语雀',
+    url: '/yuque',
+    query: ''
   }
 ]);
 </script>
@@ -119,7 +118,8 @@ let menuList = ref([
 @media (max-width: 768px) {
   .header-wrap .logo-diver,
   .header-wrap .header-nav,
-  .header-wrap .header-search {
+  .header-wrap .header-search,
+  .header-title {
     display: none !important;
   }
   .header-wrap {
