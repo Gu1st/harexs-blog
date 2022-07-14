@@ -18,11 +18,18 @@ export default function () {
       if (res.code !== 200) {
         return;
       }
-      // "app\\public\\uploads\\1654677799508.jpg"
-
-      let data = res.data.split('\\');
-      data.splice(0, 1);
-      data = data.join('/');
+      let data;
+      if (import.meta.env.MODE === 'development') {
+        // "app\\public\\uploads\\1654677799508.jpg"
+        data = res.data.split('\\');
+        data.splice(0, 1);
+        data = data.join('/');
+      } else {
+        // "app/public/uploads/1657790511297.png"
+        data = res.data.split('/');
+        data.splice(0, 1);
+        data = data.join('/');
+      }
 
       const url = `${import.meta.env.VITE_SERVERIP}/${data}`;
       // 从 res 中找到 url alt href ，然后插图图片

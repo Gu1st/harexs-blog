@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import message from './components/common/message.vue'
+import message from './components/common/message.vue';
 </script>
 
 <template>
