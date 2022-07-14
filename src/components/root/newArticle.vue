@@ -4,7 +4,7 @@
     :mask-closable="false"
     v-model:show="drawerShow"
     placement="left"
-    :width="1024"
+    :width="1120"
   >
     <n-drawer-content>
       <template #header> 文章编辑 </template>
@@ -32,7 +32,7 @@
           </n-upload>
         </n-form-item>
       </n-form>
-      <div style="border: 1px solid #ccc; margin-top: 10px; z-index: 100">
+      <div style="border: 1px solid #ccc; margin-top: 10px;margin-bottom: 40px; z-index: 100">
         <Toolbar
           :editor="editorRef"
           :defaultConfig="toolbarConfig"
@@ -43,7 +43,7 @@
           :defaultConfig="editorConfig"
           mode="default"
           v-model="articleData.content"
-          style="height: 400px; overflow-y: hidden"
+          style="height: 468px; overflow-y: hidden"
           @onCreated="handleCreated"
         />
       </div>
