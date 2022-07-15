@@ -14,4 +14,12 @@ body {
   margin: 0;
   padding: 0;
 }
+pre {
+  background-color: #f5f2f0;
+  padding: 10px;
+}
+code {
+  color: slategray;
+  white-space: pre-wrap;
+}
 </style>

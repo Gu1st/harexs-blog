@@ -39,10 +39,11 @@
 
 <script setup lang="ts">
 import articleComment from '../../../components/article/comment.vue';
-import { watchEffect } from 'vue';
+import { watchEffect, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useArticle, useCommentList } from '../../../hooks/blog/article';
 import { getterDate } from '../../../utils/getter';
+
 const route = useRoute();
 //文章相关HOOKS
 const { articleInfo, getInfo } = useArticle();
