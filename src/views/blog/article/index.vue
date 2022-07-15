@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 import articleComment from '../../../components/article/comment.vue';
-import { watchEffect, onMounted } from 'vue';
+import { watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import { useArticle, useCommentList } from '../../../hooks/blog/article';
 import { getterDate } from '../../../utils/getter';
