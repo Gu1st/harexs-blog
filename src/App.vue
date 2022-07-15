@@ -15,11 +15,12 @@ body {
   padding: 0;
 }
 pre {
-  background-color: #f5f2f0;
+  background-color: #2a2928;
   padding: 10px;
+  border-radius: 10px;
 }
 code {
-  color: slategray;
+  color: #18a058;
   white-space: pre-wrap;
 }
 </style>
