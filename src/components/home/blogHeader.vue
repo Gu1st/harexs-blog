@@ -60,7 +60,11 @@ const router = useRouter();
 const goPage = (url, query) => {
   sliderMenu.value = false;
   if (url === '/yuque') {
-    window.location.href = 'https://www.yuque.com/gu1st';
+    window.open('https://www.yuque.com/gu1st');
+    return;
+  }
+  if (url === '/juejin') {
+    window.open('https://juejin.cn/user/281906876257511');
     return;
   }
   router.push({
@@ -109,6 +113,11 @@ let menuList = ref([
   {
     title: '语雀',
     url: '/yuque',
+    query: ''
+  },
+  {
+    title: '掘金',
+    url: '/juejin',
     query: ''
   }
 ]);

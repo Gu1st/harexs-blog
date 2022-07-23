@@ -14,13 +14,4 @@ body {
   margin: 0;
   padding: 0;
 }
-pre {
-  background-color: #2a2928;
-  padding: 10px;
-  border-radius: 10px;
-}
-code {
-  color: #18a058;
-  white-space: pre-wrap;
-}
 </style>

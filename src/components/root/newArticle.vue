@@ -32,19 +32,14 @@
           </n-upload>
         </n-form-item>
       </n-form>
+
       <div style="border: 1px solid #ccc; margin-top: 10px; margin-bottom: 40px; z-index: 100">
-        <Toolbar
-          :editor="editorRef"
-          :defaultConfig="toolbarConfig"
-          mode="default"
-          style="border-bottom: 1px solid #ccc"
-        />
-        <Editor
-          :defaultConfig="editorConfig"
-          mode="default"
+        <md-editor
           v-model="articleData.content"
-          style="height: 468px; overflow-y: hidden"
-          @onCreated="handleCreated"
+          @onUploadImg="editorUploadImg"
+          :showCodeRowNumber="true"
+          :noPrettier="true"
+          :noKatex="true"
         />
       </div>
       <template #footer>
@@ -57,16 +52,58 @@
 </template>
 <script setup lang="ts">
 import { ref, reactive, watchEffect } from 'vue';
-import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
-import useEditor from '../../hooks/root/editor';
 import { getToken } from '../../utils/token';
 import { UploadFileInfo } from 'naive-ui';
+import axios from 'axios';
 
 //得到分类数据
 import { list } from '../../api/root/classify';
 import { article, info, update } from '../../api/root/article';
 
+import MdEditor from 'md-editor-v3';
+import 'md-editor-v3/lib/style.css';
+
 const uploadUrl = `${import.meta.env.VITE_SERVERIP}/upload`;
+
+const editorUploadImg = async (files, callback) => {
+  const res = await Promise.all(
+    files.map(file => {
+      return new Promise((rev, rej) => {
+        const form = new FormData();
+        form.append('file', file);
+
+        axios
+          .post(`${import.meta.env.VITE_SERVERIP}/upload`, form, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          })
+          .then(res => rev(res.data))
+          .catch(error => rej(error));
+      });
+    })
+  );
+
+  callback(
+    res.map(item => {
+      let data;
+      if (import.meta.env.MODE === 'development') {
+        // "app\\public\\uploads\\1654677799508.jpg"
+        data = item.data.split('\\');
+        data.splice(0, 1);
+        data = data.join('/');
+      } else {
+        // "app/public/uploads/1657790511297.png"
+        data = item.data.split('/');
+        data.splice(0, 1);
+        data = data.join('/');
+      }
+
+      const url = `${import.meta.env.VITE_SERVERIP}/${data}`;
+      return url;
+    })
+  );
+};
 
 const articleData = reactive({
   selectValue: [],
@@ -159,7 +196,4 @@ watchEffect(() => {
 
 //读默认的Token附加在上传接口中
 const token = getToken();
-
-//编辑器钩子
-let { editorRef, toolbarConfig, editorConfig, handleCreated } = useEditor();
 </script>

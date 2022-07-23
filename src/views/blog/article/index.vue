@@ -4,6 +4,7 @@
       <div class="article-title">
         <span>{{ articleInfo.title }}</span>
       </div>
+
       <div class="article-footer">
         <div class="article-date">
           <span>gu1st发表于{{ getterDate(articleInfo.created_at) }}</span
@@ -17,6 +18,7 @@
           <span>共{{ articleInfo.comment_num ? articleInfo.comment_num : 0 }}条评论</span>
         </div>
       </div>
+
       <div
         v-if="articleInfo.head_img"
         class="article-img"
@@ -25,7 +27,15 @@
       <div class="article-desc">
         {{ articleInfo.desc }}
       </div>
-      <div class="article-content" v-html="articleInfo.content"></div>
+      <div class="article-content">
+        <md-editor
+          previewOnly
+          v-model="articleInfo.content"
+          :showCodeRowNumber="true"
+          :noPrettier="true"
+          :noKatex="true"
+        />
+      </div>
     </div>
   </div>
   <!-- 评论组件 -->
@@ -43,6 +53,8 @@ import { watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import { useArticle, useCommentList } from '../../../hooks/blog/article';
 import { getterDate } from '../../../utils/getter';
+import MdEditor from 'md-editor-v3';
+import 'md-editor-v3/lib/style.css';
 
 const route = useRoute();
 //文章相关HOOKS
@@ -127,7 +139,7 @@ watchEffect(() => {
     background-color: #fff;
     border-left: 4px solid #dddddd;
     margin: 10px 0 10px 0;
-    font-size: 16px;
+    font-size: 14px;
   }
   .article-footer {
     display: flex;
