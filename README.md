@@ -1,4 +1,8 @@
 #### 说明
-自用博客前端源代码, 有能力的可以直接改来用以及学习
-#### 技术栈和介绍
-https://www.gu1st.cn/article?id=1
+
+花费了一些时间 写的一套博客，包含前后端。
+http://blog.gu1st.cn/article?id=1
+
+#### 主要技术栈
+
+Vue3、Egg.js
