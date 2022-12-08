@@ -111,6 +111,11 @@ let menuList = ref([
     query: ''
   },
   {
+    title: '分类',
+    url: '/label',
+    query: ''
+  },
+  {
     title: '语雀',
     url: '/yuque',
     query: ''

@@ -1,6 +1,26 @@
-import { articleAndClassify } from '../../api/bolg/category';
+import { articleAndClassify, classifyToBlog } from '../../api/bolg/category';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
+
+export function useCategoryToBlog() {
+  //数据源
+  const listData = ref([]);
+
+  //获取数据
+  const getList = () => {
+    const ListRes = classifyToBlog();
+    ListRes.then((res: any) => {
+      listData.value = res.data;
+      console.log(res.data);
+    });
+  };
+
+  return {
+    listData,
+    getList
+  };
+}
+
 export function useCategory() {
   //分页相关
   const page = ref(1);

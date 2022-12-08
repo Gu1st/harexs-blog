@@ -25,6 +25,14 @@ const routes: RouteRecordRaw[] = [
         component: () => import('../views/blog/category/index.vue')
       },
       {
+        path: '/label',
+        name: 'label',
+        meta: {
+          title: '标签页'
+        },
+        component: () => import('../views/blog/label/index.vue')
+      },
+      {
         path: '/search/:content',
         name: 'search',
         meta: {

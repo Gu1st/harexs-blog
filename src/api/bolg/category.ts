@@ -11,3 +11,9 @@ export function articleAndClassify(cid, page) {
     }
   });
 }
+export function classifyToBlog() {
+  return gu1stApi({
+    url: `${IP}/classifyToBlog`,
+    method: 'get'
+  });
+}
