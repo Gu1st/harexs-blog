@@ -17,7 +17,7 @@
       </div>
     </transition>
     <img class="header-logo" :src="dog" @click="goHome" />
-    <div class="header-title" @click="goHome">Gu1st's Blog</div>
+    <div class="header-title" @click="goHome">Harexs's Blog</div>
     <div class="logo-diver"></div>
     <div class="header-nav">
       <a
