@@ -117,7 +117,7 @@ const router = createRouter({
 //路由全局前置守卫
 router.beforeEach(async to => {
   if (to.meta) {
-    document.title = `Gu1st's Blog` + ' - ' + (to.meta.title as string);
+    document.title = `Harexs's Blog` + ' - ' + (to.meta.title as string);
   }
   //  如果要去后台则对token进行验证 6.13 将会话存储为本地存储
   if (to.fullPath.includes('root')) {
