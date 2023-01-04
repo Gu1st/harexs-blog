@@ -5,7 +5,7 @@
       <div
         @click="CatCategory(item)"
         class="label__main--block"
-        v-for="item in listData"
+        v-for="item in (listData as any)"
         :key="item.id"
       >
         分类：{{ item.class_name }}

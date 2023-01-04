@@ -10,7 +10,7 @@
           :key="index"
           @click="goPage(item.url, item.query)"
           :style="{
-            color: route.path === item.url && route.query?.cid === item.query ? '#18a058' : ''
+            color: route.fullPath === item.url ? '#18a058' : ''
           }"
           >{{ item.title }}</a
         >
@@ -25,12 +25,7 @@
         :key="index"
         @click="goPage(item.url, item.query)"
         :style="{
-          color:
-            route.path === '/home' && item.url === '/home'
-              ? '#18a058'
-              : route.path === item.url && route.query?.cid === item.query
-              ? '#18a058'
-              : ''
+          color: route.fullPath === item.url ? '#18a058' : ''
         }"
         >{{ item.title }}</a
       >
@@ -69,9 +64,7 @@ const goPage = (url, query) => {
   }
   router.push({
     path: url,
-    query: {
-      cid: query
-    }
+    query
   });
 };
 //显示和隐藏菜单
@@ -116,6 +109,11 @@ let menuList = ref([
     query: ''
   },
   {
+    title: '关于',
+    url: '/article?id=1',
+    query: { id: 1 }
+  },
+  {
     title: '语雀',
     url: '/yuque',
     query: ''
@@ -129,7 +127,7 @@ let menuList = ref([
 </script>
 
 <style scoped lang="scss">
-@media (max-width: 768px) {
+@media (max-width: 800px) {
   .header-wrap .logo-diver,
   .header-wrap .header-nav,
   .header-wrap .header-search,
@@ -154,6 +152,7 @@ let menuList = ref([
   box-shadow: 0px 0px 6px 1px #e5e5e5;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  z-index: 9999;
   .header-slideMenu {
     position: absolute;
     top: 61px;
